@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EducationalPracticeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Building">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NumberOfRoom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IdLocationInBuilding" Type="Int32" />
+    <Property Name="Appointment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IdRoomType" Type="Int32" />
+    <Property Name="RoomLength" Type="Double" />
+    <Property Name="RoomWidth" Type="Double" />
+    <Property Name="IdUniversityDivision" Type="Int32" />
+    <NavigationProperty Name="LocationInBuilding" Relationship="Self.FK_Building_LocationInBuilding" FromRole="Building" ToRole="LocationInBuilding" />
+    <NavigationProperty Name="RoomType" Relationship="Self.FK_Building_RoomType" FromRole="Building" ToRole="RoomType" />
+    <NavigationProperty Name="UniversityDivision" Relationship="Self.FK_Building_UniversityDivision" FromRole="Building" ToRole="UniversityDivision" />
+  </EntityType>
+  <EntityType Name="LocationInBuilding">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RoomHeight" Type="Double" />
+    <NavigationProperty Name="Building" Relationship="Self.FK_Building_LocationInBuilding" FromRole="LocationInBuilding" ToRole="Building" />
+  </EntityType>
+  <EntityType Name="RoomType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Building" Relationship="Self.FK_Building_RoomType" FromRole="RoomType" ToRole="Building" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="UniversityDivision">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Building" Relationship="Self.FK_Building_UniversityDivision" FromRole="UniversityDivision" ToRole="Building" />
+  </EntityType>
+  <Association Name="FK_Building_LocationInBuilding">
+    <End Role="LocationInBuilding" Type="Self.LocationInBuilding" Multiplicity="0..1" />
+    <End Role="Building" Type="Self.Building" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LocationInBuilding">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Building">
+        <PropertyRef Name="IdLocationInBuilding" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Building_RoomType">
+    <End Role="RoomType" Type="Self.RoomType" Multiplicity="0..1" />
+    <End Role="Building" Type="Self.Building" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RoomType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Building">
+        <PropertyRef Name="IdRoomType" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Building_UniversityDivision">
+    <End Role="UniversityDivision" Type="Self.UniversityDivision" Multiplicity="0..1" />
+    <End Role="Building" Type="Self.Building" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UniversityDivision">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Building">
+        <PropertyRef Name="IdUniversityDivision" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Building" EntityType="Self.Building" />
+    <EntitySet Name="LocationInBuilding" EntityType="Self.LocationInBuilding" />
+    <EntitySet Name="RoomType" EntityType="Self.RoomType" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="UniversityDivision" EntityType="Self.UniversityDivision" />
+    <AssociationSet Name="FK_Building_LocationInBuilding" Association="Self.FK_Building_LocationInBuilding">
+      <End Role="LocationInBuilding" EntitySet="LocationInBuilding" />
+      <End Role="Building" EntitySet="Building" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Building_RoomType" Association="Self.FK_Building_RoomType">
+      <End Role="RoomType" EntitySet="RoomType" />
+      <End Role="Building" EntitySet="Building" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Building_UniversityDivision" Association="Self.FK_Building_UniversityDivision">
+      <End Role="UniversityDivision" EntitySet="UniversityDivision" />
+      <End Role="Building" EntitySet="Building" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
